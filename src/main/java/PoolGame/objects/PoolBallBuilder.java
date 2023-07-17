@@ -1,6 +1,5 @@
 package PoolGame.objects;
 
-import PoolGame.Config;
 import PoolGame.strategy.BallStrategy;
 import PoolGame.strategy.BlueStrategy;
 import PoolGame.strategy.PocketStrategy;

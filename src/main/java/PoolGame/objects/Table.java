@@ -1,11 +1,7 @@
 package PoolGame.objects;
 
-import PoolGame.Config;
 import javafx.scene.paint.Paint;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-
+import java.util.*;
 /** Holds properties of the table object. */
 public class Table{
 

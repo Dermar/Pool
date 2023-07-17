@@ -1,19 +1,26 @@
 package PoolGame;
 
 import java.util.*;
+import java.awt.*;
 import javafx.scene.paint.Paint;
 
 /** Holds static final data. */
 public class Config {
 
-    private static final double TABLEBUFFER = 150;
+    
     private static final double TABLEEDGE = 10;
 
-    private static final int CUEHEIGHT = 200;
-    private static final int CUEWIDTH = 8;
+    private static final int CUEHEIGHT = 400;
+    private static final int CUEWIDTH = 15;
     private static final int CUESTARTX = 100;
     private static final int CUESTARTY = 300;
-    private static final double FORCEFACTOR = 0.1;
+    private static final double FORCEFACTOR = 0.05;
+    private static final Dimension s = Toolkit.getDefaultToolkit().getScreenSize();
+
+    public static final double SCREENWIDTH = s.getWidth();
+    public static final double SCREENHEIGHT = s.getHeight();
+    private static final double TABLEBUFFER = (SCREENWIDTH - 1600)/2;
+
 
     // Scores for each colour of ball
     private static Map<String, Integer> BALLSCORES;

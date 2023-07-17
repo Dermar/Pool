@@ -22,7 +22,7 @@ public class Ball extends CirclePrototype {
 
     public Ball(String colour, double xPosition, double yPosition, double xVelocity, double yVelocity, double mass,
             boolean isCue, PocketStrategy strategy) {
-        super(xPosition, yPosition, 10);
+        super(xPosition, yPosition, 20);
         this.colour = Paint.valueOf(colour);
         this.xPosition = xPosition;
         this.yPosition = yPosition;

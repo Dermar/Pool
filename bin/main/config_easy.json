@@ -3,7 +3,7 @@
     "colour": "lightgreen",
     "friction": 0.9,
     "size": {
-      "x": 600,
+      "x": 800,
       "y": 400
     },
     "pockets": [
@@ -12,42 +12,42 @@
           "x": 8.0,
           "y": 8.0
         },
-        "radius": 13.0
+        "radius": 26.0
       },
       {
         "position": {
-          "x": 592.0,
+          "x": 1592.0,
           "y": 8.0
         },
-        "radius": 13.0
+        "radius": 26.0
       },
       {
         "position": {
-          "x": 300.0,
+          "x": 800.0,
           "y": 8.0
         },
-        "radius": 13.0
+        "radius": 26.0
       },
       {
         "position": {
           "x": 8.0,
-          "y": 392.0
+          "y": 792.0
         },
-        "radius": 13.0
+        "radius": 26.0
       },
       {
         "position": {
-          "x": 300.0,
-          "y": 392.0
+          "x": 800.0,
+          "y": 792.0
         },
-        "radius": 13.0
+        "radius": 26.0
       },
       {
         "position": {
-          "x": 592.0,
-          "y": 392.0
+          "x": 1592.0,
+          "y": 792.0
         },
-        "radius": 13.0
+        "radius": 26.0
       }
     ]
   },

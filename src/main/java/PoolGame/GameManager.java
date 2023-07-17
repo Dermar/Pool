@@ -11,25 +11,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javafx.geometry.Point2D;
-
+import javafx.geometry.Pos;
+import javafx.geometry.Insets;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.Scene;
 import javafx.scene.text.Font;
 import javafx.scene.paint.Paint;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.Pane;
-
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import javafx.util.Pair;
-
+import java.awt.*;
 /**
  * Controls the game interface; drawing objects, handling logic and collisions.
  */
@@ -38,8 +37,6 @@ public class GameManager {
     private ArrayList<Ball> balls = new ArrayList<Ball>();
 
     private Line cue = new Line();
-    private boolean cueSet;
-    private boolean cueActive;
     private Ball cueBall;
     private boolean winFlag = false;
     private int score = 0;
@@ -66,22 +63,37 @@ public class GameManager {
         timeline.play();
     }
 
-
+    public void styleButton(Button b){
+        b.setStyle("-fx-background-color: #090a0c; ");
+        b.setTextFill(Paint.valueOf("white"));
+        b.setPrefWidth(100);
+        b.setPrefHeight(40);
+        Font font = Font.font("Arial", 12);
+        b.setFont(font);
+    }
     /**
      * Builds GameManager properties such as initialising pane, canvas,
      * graphicscontext, and setting events related to clicks.
      */
     public void buildManager() {
+        Dimension s = Toolkit.getDefaultToolkit().getScreenSize();
+        
         currTime = 0;
         score = 0;
 
         // Restart the pane every time you look into a new file
         pane.getChildren().clear();
 
-        timeNum = new Text(table.getxLength() + 20, 20, "Time: 0:00");
-        scoreNum = new Text(table.getxLength() + 100, 20, "Score: " + score);
+        timeNum = new Text(Config.SCREENWIDTH - 250, 30, "Time: 0:00");
+        scoreNum = new Text(Config.SCREENWIDTH - 100, 30, "Score: " + score);
+        timeNum.setFill(Paint.valueOf("white"));
+        scoreNum.setFill(Paint.valueOf("white"));
 
-        Canvas canvas = new Canvas(table.getxLength() + TABLEBUFFER * 2, table.getyLength() + TABLEBUFFER * 2);
+        timeNum.setScaleX(1.7);
+        scoreNum.setScaleX(1.7);
+        //Canvas canvas = new Canvas(table.getxLength() + TABLEBUFFER * 2, table.getyLength() + TABLEBUFFER * 2);
+        Canvas canvas = new Canvas(s.getWidth(), s.getHeight());
+
         gc = canvas.getGraphicsContext2D();
 
         // We need to know the cueBall for CueStick to detect so let's look for it
@@ -98,42 +110,50 @@ public class GameManager {
 
         setClickEvents(pane);
         pane.getChildren().add(cue);
-
+        
         // Difficulty buttons
         Button easy = new Button("Easy Mode");
+        Button normal = new Button("Normal Mode");
+        Button hard = new Button("Hard Mode");
+
+        styleButton(easy);
+        styleButton(normal);
+        styleButton(hard);
+        
         easy.setOnAction(value -> {
             // reset the game to easy mode
             difficultyState = new EasyState();
             difficultyState.modeSet(this);
 
         });
-        easy.setLayoutX(table.getxLength() - 50);
-        easy.setLayoutY(100);
+        easy.setLayoutX(table.getxLength() - 220);
+        easy.setLayoutY(80);
 
-        Button normal = new Button("Normal Mode");
+        
         normal.setOnAction(value -> {
             // reset the game to normal mode
             difficultyState = new NormalState();
             difficultyState.modeSet(this);
         });
-        normal.setLayoutX(table.getxLength() + 30);
-        normal.setLayoutY(100);
+        normal.setLayoutX(table.getxLength() - 70);
+        normal.setLayoutY(80);
 
-        Button hard = new Button("Hard Mode");
+        
         hard.setOnAction(value -> {
             difficultyState = new HardState();
             difficultyState.modeSet(this);
         });
-        hard.setLayoutX(table.getxLength() + 130);
-        hard.setLayoutY(100);
+        hard.setLayoutX(table.getxLength() + 80);
+        hard.setLayoutY(80);
 
         // Undo button
         Button undo = new Button("Undo");
         undo.setOnAction(value -> {
             setMemento(stateKeep.getMemento());
         });
-        undo.setLayoutX(table.getxLength() + TABLEBUFFER + 20);
-        undo.setLayoutY(200);
+        undo.setLayoutX(table.getxLength() + TABLEBUFFER + 30);
+        undo.setLayoutY(table.getyLength() + TABLEBUFFER - 30);
+        styleButton(undo);
 
         cheatMechanism = new Cheat(this);
         ComboBox comboBox = cheatMechanism.getBox();
@@ -142,9 +162,13 @@ public class GameManager {
             cheatMechanism.notify(this, String.valueOf(comboBox.getValue()));
         });
 
-        comboBox.setLayoutX(40);
-        Text cheat = new Text(5, 20, "Cheat: ");
-        cheat.setFill(Paint.valueOf("black"));
+        comboBox.setLayoutX(60);
+        comboBox.setLayoutY(80);
+        comboBox.setBackground(new Background(new BackgroundFill(Paint.valueOf("white"), 
+                                          CornerRadii.EMPTY, Insets.EMPTY)));
+
+        Text cheat = new Text(10, 100, "Cheat: ");
+        cheat.setFill(Paint.valueOf("white"));
         // Add all the buttons and the canvas to the pane
         pane.getChildren().add(canvas);
         pane.getChildren().add(hard);
@@ -174,8 +198,8 @@ public class GameManager {
         timeNum.setText("Time: " + minutes + ":" + seconds);
 
         // Fill in background
-        gc.setFill(Paint.valueOf("white"));
-        gc.fillRect(0, 0, table.getxLength() + TABLEBUFFER * 2, table.getyLength() + TABLEBUFFER * 2);
+        gc.setFill(Paint.valueOf("sienna"));
+        gc.fillRect(0, 0, Config.SCREENWIDTH, Config.SCREENHEIGHT);
 
 
         // Fill in edges
@@ -211,10 +235,12 @@ public class GameManager {
         // Win
         if (winFlag) {
             gc.setStroke(Paint.valueOf("white"));
-            gc.setFont(new Font("Impact", 80));
+            gc.setFont(new Font("Impact", 60));
             gc.setLineWidth(1);
-            gc.strokeText("Win and bye", table.getxLength() / 2 + TABLEBUFFER - 180,
-                    table.getyLength() / 2 + TABLEBUFFER);
+            gc.strokeText("Win! Can't believe you did it!\n      Wait... did you cheat?", Config.SCREENWIDTH/2 - 400,
+                    Config.SCREENHEIGHT/2);
+            StackPane root = new StackPane();
+            StackPane.setAlignment(root, Pos.CENTER);
         }
 
     }
@@ -323,8 +349,6 @@ public class GameManager {
             cue.setStartX(event.getX());
             cue.setStartX(event.getY());
             calcEndStick();
-            cueSet = false;
-            cueActive = true;
         });
 
         pane.setOnMouseDragged(event -> {
@@ -334,8 +358,6 @@ public class GameManager {
         });
 
         pane.setOnMouseReleased(event -> {
-            cueSet = true;
-            cueActive = false;
             hitBall(cueBall);
             // Set the cueStick to its standard place on release
             cue.setStartX(Config.getCueStartX());
@@ -365,7 +387,6 @@ public class GameManager {
             ball.setxVel(hitxVel);
             ball.setyVel(hityVel);
         }
-        cueSet = false;
 
     }
 

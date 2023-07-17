@@ -48,7 +48,7 @@ public class TableReader implements Reader {
                 System.exit(0);
             }
 
-            gameManager.setTable(new Table(tableColour, tableX, tableY, tableFriction));
+            gameManager.setTable(new Table(tableColour, 2*tableX, 2*tableY, tableFriction));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

@@ -2,7 +2,6 @@ package PoolGame.config;
 
 import PoolGame.GameManager;
 import PoolGame.objects.Pocket;
-import PoolGame.objects.Table;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
